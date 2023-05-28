@@ -1,0 +1,16 @@
+<div className='card flex flex-col items-center min-w-[150px] min-h-[180px] max-w-[150px] max-h-[180px] rounded-lg overflow-hidden shadow-lg'>
+        <div className="img-container w-full h-80px overflow-hidden " >
+            <img onClick={()=>navigate('/detail/123')} src={gambarKafe} className='w-full h-full object-cover' />
+        </div>
+        <div className="desc w-full p-1">
+            <h3 className='text-[10px] font-medium'>Caffe Lurasya Yogyakarta</h3>
+            <span className='w-full flex'>
+                <img src={star} className='w-2' />
+                <img src={star} className='w-2' />
+                <img src={star} className='w-2' />
+                <img src={star} className='w-2' />
+            </span>
+            <p className='text-[8px]'>Jl.Kretek.Tirtohargo,Bantul</p>
+            <p className='text-[8px]'>4,5(2.040 Review)</p>
+        </div>
+    </div>

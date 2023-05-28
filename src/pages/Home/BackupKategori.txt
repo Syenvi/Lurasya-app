@@ -1,0 +1,82 @@
+   const navigate = useNavigate();
+  const [kategoriAktif, setKategoriAktif] = useState('Masjid');
+  
+
+  const activeLinkBanner = (kategori) =>
+    kategori === kategoriAktif
+      ? 'bg-[#e7f2ff] border-1 border-[#1fa0e2] rounded-3xl p-2 pl-5 pr-5 text-[#1fa0e2] flex justify-center items-center'
+      : 'bg-white border-1 border-[#c1c1c1] rounded-3xl p-2 pl-5 pr-5 text-[#c1c1c1] justify-center items-center';
+  
+
+  const handleKategoriClick = (kategori) => {
+    setKategoriAktif(kategori);
+  };
+  
+ 
+ <div className="kategori flex justify-evenly w-full items-start  pt-5 pb-5">
+        <div className="flex flex-col justify-center items-center text-xs gap-1 w-14">
+          <img src={masjid} />
+          <p>Masjid</p>
+        </div>
+        <div className="flex flex-col justify-center items-center text-xs gap-1 w-14">
+          <img src={atm} />
+          <p>ATM</p>
+        </div>
+        <div className="flex flex-col justify-center items-center text-xs gap-1 w-14">
+          <img src={minimarket} />
+          <p>Minimarket</p>
+        </div>
+        <div className="flex flex-col justify-center items-center text-xs gap-1 w-14 ">
+          <img src={tempatWisata} />
+          <p className="text-center leading-3">Tempat wisata</p>
+        </div>
+        <div className="flex flex-col justify-center items-center text-xs gap-1 w-14">
+          <img src={kafe} />
+          <p>Kafe</p>
+        </div>
+      </div>
+      <div className='w-full flex flex-col gap-3'>
+      <div className="greeting flex w-full pl-4 flex-col h-[230px] justify-between">
+        <div className="image flex items-center gap-2 font-medium text-md">
+          <img src={greeting} className="w-9" />
+          <h2 className="w-[60%] leading-4">Ayo, mulai jelajahi tempat yang kamu mau!</h2>
+        </div>
+        <div className="kategori text-xs flex overflow-scroll gap-2">
+          <NavLink
+            className={activeLinkBanner('Masjid')}
+            onClick={() => handleKategoriClick('Masjid')}
+          >
+            <button>Masjid</button>
+          </NavLink>
+          <NavLink
+            className={activeLinkBanner('ATM')}
+            onClick={() => handleKategoriClick('ATM')}
+          >
+            <button>ATM</button>
+          </NavLink>
+          <NavLink
+            className={activeLinkBanner('Minimarket')}
+            onClick={() => handleKategoriClick('Minimarket')}
+          >
+            <button>Minimarket</button>
+          </NavLink>
+          <NavLink
+            className={activeLinkBanner('Tempat Wisata')}
+            onClick={() => handleKategoriClick('Tempat Wisata')}
+          >
+            <button className='w-24'>Tempat Wisata</button>
+          </NavLink>
+          <NavLink
+            className={activeLinkBanner('Kafe')}
+            onClick={() => handleKategoriClick('Kafe')}
+          >
+            <button>Kafe</button>
+          </NavLink>
+        </div>
+        <div className="bannerLogo flex overflow-scroll gap-3">
+        <img src={bannerCoffe} />
+        <img src={bannerCoffe} />
+        </div>
+      </div>
+    
+      </div>
