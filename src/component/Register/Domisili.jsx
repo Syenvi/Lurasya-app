@@ -24,9 +24,9 @@ const [selectedDesa, setSelectedDesa] = useState('');
         setProvinsiOptions(options);
         
       });
-  }, []);
+    },[]);
 
-  const handleProvinsiChange = (selectedOption) => {
+    const handleProvinsiChange = (selectedOption) => {
     setSelectedProvinsi(selectedOption);
     setSelectedKabupaten('');
     setSelectedKecamatan('');
@@ -52,6 +52,7 @@ const [selectedDesa, setSelectedDesa] = useState('');
   const handleKabupatenChange = (selectedOption) => {
     setSelectedKabupaten(selectedOption);
     setSelectedKecamatan('');
+    setSelectedDesa('');
     // Mendapatkan kecamatan berdasarkan id kabupaten yang dipilih
     fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/districts/${selectedOption.value}.json`)
       .then((response) => response.json())
@@ -72,6 +73,8 @@ const [selectedDesa, setSelectedDesa] = useState('');
 
   const handleKecamatanChange = (selectedOption) => {
     setSelectedKecamatan(selectedOption);
+
+    setSelectedDesa('');
     // Mendapatkan desa berdasarkan id kecamatan yang dipilih
     fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/villages/${selectedOption.value}.json`)
       .then((response) => response.json())
@@ -101,44 +104,48 @@ const [selectedDesa, setSelectedDesa] = useState('');
       ...provided,
       border: 'none',
       boxShadow: 'none',
-      backgroundColor:'white'
+      backgroundColor:'slate'
     }),
   };
   return (
     <div className='w-full flex flex-col items-center gap-5'>
       <Select
-       className='w-full rounded-lg bg-white z-40'
+       className='w-full rounded-lg bg-slate-200 z-40'
         options={provinsiOptions}
         value={selectedProvinsi}
         onChange={handleProvinsiChange}
-                styles={customStyles}
-
+        defaultInputValue={formData.provinsi}
+        styles={customStyles}
         placeholder='Pilih Provinsi'
+        required
       />
       <Select
-       className='w-full rounded-lg bg-white z-30'
+       className='w-full rounded-lg bg-slate-200 z-30'
         options={kabupatenOptions}
         value={selectedKabupaten}
         onChange={handleKabupatenChange}
+          defaultInputValue={formData.kota}
                 styles={customStyles}
-
+                required
         placeholder='Pilih Kabupaten'
       />
       <Select
-       className='w-full rounded-lg bg-white z-20'
+       className='w-full rounded-lg bg-slate-200 z-20'
         options={kecamatanOptions}value={selectedKecamatan}
         onChange={handleKecamatanChange}
+          defaultInputValue={formData.kecamatan}
                 styles={customStyles}
-
+                required
         placeholder='Pilih Kecamatan'
       />
       <Select
-       className='w-full rounded-lg bg-white z-10'
+       className='w-full rounded-lg bg-slate-200 z-10'
   options={desaOptions}
   value={selectedDesa}
   onChange={handleDesaChange}
+    defaultInputValue={formData.desa}
           styles={customStyles}
-
+          required
   placeholder='Pilih Desa'
 />
 

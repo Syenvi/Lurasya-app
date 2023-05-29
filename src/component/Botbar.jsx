@@ -1,6 +1,6 @@
 import React from 'react'
 import {IoHome} from 'react-icons/io5'
-import {MdOutlineAddBox} from 'react-icons/md'
+import add from '../assets/plus.png'
 import {RiUser3Fill} from 'react-icons/ri'
 import { NavLink, useNavigate } from 'react-router-dom'
 const Botbar = ({setPartnerModal}) => {
@@ -19,7 +19,7 @@ const Botbar = ({setPartnerModal}) => {
           setPartnerModal(true)
         }
       }}>
-        <i ><MdOutlineAddBox/></i>
+        <img src={add} className='w-[20px]' />
       </span>
       <NavLink className={activeLink} to='/profile'>
         <i ><RiUser3Fill/></i>

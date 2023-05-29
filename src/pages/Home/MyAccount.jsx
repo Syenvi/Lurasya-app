@@ -6,7 +6,8 @@ import { IoBookmarksOutline } from 'react-icons/io5';
 import Feed from '../../component/Feed';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-const MyAccount = () => {
+const MyAccount = ({partnerModal,setPartnerModal}) => {
+  const role = localStorage.getItem('role')
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState("post")
   const activeLink = (tabActive)=> (activeTab === tabActive?'border-b-2 border-black p-2':' p-2')
@@ -38,14 +39,17 @@ const MyAccount = () => {
           </p>
         </div>
         <div className="pbl flex border-b-2 w-full justify-evenly sticky top-8 bg-white ">
-          <NavLink className={activeLink('post')} onClick={()=>setActiveTab('post')}>
-            <CgFeed />
-          </NavLink >
-          <NavLink  className={activeLink('bookmark') } onClick={()=>setActiveTab('bookmark')}>
-            <IoBookmarksOutline />
-          </NavLink>
+          {
+            role != 'user' ? 
+            <NavLink className={activeLink('post')} onClick={()=>setActiveTab('post')}>
+          <CgFeed />
+        </NavLink >:null
+          }
           <NavLink  className={activeLink('like')} onClick={()=>setActiveTab('like')}>
             <AiOutlineHeart />
+          </NavLink>
+          <NavLink  className={activeLink('bookmark') } onClick={()=>setActiveTab('bookmark')}>
+            <IoBookmarksOutline />
           </NavLink>
         </div>
         <div className="grid grid-cols-3 w-full overflow-hidden " >

@@ -3,17 +3,14 @@ import SignUp from './SignUp'
 import Domisili from './Domisili'
 import PersonalInfo from './PersonalInfo'
 import {MdOutlineArrowBackIos} from 'react-icons/md'
-import axios from 'axios'
-import gambar1 from '../../assets/RegisterImg/Onoboarding_1 1.png'
-import gambar2 from '../../assets/RegisterImg/Onboarding_2 1.png'
-import gambar3 from '../../assets/RegisterImg//Onboarding_3 1.png'
+import gambar from '../../assets/RegisterImg/6310507.jpg'
 import { useNavigate } from 'react-router-dom'
 import instance from '../../API/Api'
 
 const RegisterForm = () => {
   const navigate =useNavigate()
     const [page, setPage] = useState(0)
-    const GambarVektor = [gambar1,gambar2,gambar3]
+    const GambarVektor = [gambar]
     const FormTitles = ['Data Diri','Buat Akun','Domisili']
     const [formData, setFormData] = useState({
         name :'',
@@ -35,19 +32,29 @@ const RegisterForm = () => {
         }
     } 
     const isComplete = () => {
-        if (page === 0 && formData.name.trim() === "" ) {
-          return true;
-        } else if (page === 1 && (formData.email.trim() === "" || formData.password.trim() === "" || formData.password_confirmation.trim() === "")) {
-          return true;
-        } else if (page === 2 && (formData.provinsi.trim() === "" || formData.kota.trim() === "" || formData.kecamatan.trim() === "" || formData.desa.trim() === "")) {
-          return true;
-        } else {
+        if (page === 0 && (formData.name.trim() === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.name))) {
+          alert('Username tidak valid. Harus terdiri dari minimal 4 karakter alfanumerik')
           return false;
+        } else if (page === 1 && (formData.email.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) )) {
+          alert('Email tidak valid. Silakan periksa kembali.')
+          return false;
+        } else if(page === 1 && (!/^.{8,}$/.test(formData.password) || formData.password.trim() === "") ){
+          alert('Password Tidak Valid,Harus memiliki minimal 8 karakter huruf')
+          return false
+        }else if(page === 1 && (formData.password_confirmation.trim() === "" || formData.password_confirmation != formData.password)){
+          alert('Password konfirmasi tidak cocok. Silakan periksa kembali.')
+          return false
+        }
+        else if (page === 2 && (formData.provinsi.trim() === "" || formData.kota.trim() === "" || formData.kecamatan.trim() === "" || formData.desa.trim() === "")) {
+          alert('Data Domisili Harus Diisi Semua')
+          return false;
+        } else {
+          return true;
         }
       };
       
-      const handleSubmit =(e)=>{
-        e.preventDefault()
+      const handleSubmit =()=>{
+       if( isComplete()){
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
@@ -63,12 +70,22 @@ const RegisterForm = () => {
         })
         .catch((error) => {
           console.log(error);
+          // alert('err')
+              alert(`Form Telah Disubmit
+              Cek data anda
+              ${formData.name}
+              ${formData.email}
+              ${formData.provinsi}
+              ${formData.kecamatan}
+              ${formData.kota}
+              ${formData.desa}
+              `);
         });
-      }
+      }}
 
   return (
-    <div className='from w-full h-screen flex flex-col justify-center items-center bg-white'>
-        <div className="header w-full h-[30vh] flex flex-col p-5 ">
+    <div className='from w-full h-screen flex flex-col md:flex-row justify-between items-center'>
+        <div className="header w-full  flex flex-col justify-between p-5  ">
             <span className='text-[#1fa0e2] w-full text-xl'
             onClick={()=>{
               if(page === 0){
@@ -78,11 +95,22 @@ const RegisterForm = () => {
               }
             }}
             ><MdOutlineArrowBackIos/></span>
-            <span className='w-full justify-center flex'><img src={GambarVektor[page]} className='w-[40%]' /></span>
         </div>
-      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-center gap-5 items-center flex-col bg-[#1fa0e2]">
-            <h1 className='text-2xl text-white font-semibold '>{FormTitles[page]}</h1>
-        <form onSubmit={(e)=>{
+            <span className='w-full justify-center flex'><img src={GambarVektor} className='w-[70%]' /></span>
+      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col ">
+        <div className="top w-full flex flex-col gap-5">
+            <h1 className='text-2xl font-semibold '>{FormTitles[page]}</h1>
+        <div className="body w-full flex flex-col gap-5 items-end ">
+            {PageDisplay()}
+        </div>
+        <div className="footer flex gap-3 w-full justify-end ">
+            <button
+            className='bg-slate-200 text-[#1fa0e2] disabled:hidden p-2 rounded-lg'
+            disabled={page === 0}
+            onClick={()=>setPage(page-1)}>Kembali</button>
+            <button 
+            // disabled= {isComplete()}
+            onClick={()=>{
             if (page === FormTitles.length - 1) {
               // // Tombol "Submit" ditekan
               // alert(`Form Telah Disubmit
@@ -94,25 +122,19 @@ const RegisterForm = () => {
               // ${formData.kota}
               // ${formData.desa}
               // `);
-              handleSubmit(e)
+              handleSubmit()
             } else {
               // Tombol "Selanjutnya" ditekan
-              e.preventDefault()
-              setPage(page + 1);
+              if(isComplete()){
+                setPage(page + 1);
+              }
             }
-        }} className="body w-[70%]">
-            {PageDisplay()}
-        <div className="footer flex gap-3  ">
-            <button
-            className='bg-white text-[#1fa0e2] disabled:opacity-50 p-2 rounded-lg'
-            disabled={page === 0}
-            onClick={()=>setPage(page-1)}>Kembali</button>
-            <button 
-            // disabled= {isComplete()}
-            className='bg-white text-[#1fa0e2] disabled:opacity-50 p-2 rounded-lg'
+            }}
+            className='bg-[#1fa0e2] text-white  p-2 rounded-lg'
             >{page === FormTitles.length - 1 ? 'Submit' : 'Selanjutnya' }</button>
         </div>
-        </form>
+        </div>
+            <p onClick={()=>navigate('/login')} className='text-sm mt-5 w-full text-center'>Sudah punya akun ?<span className='font-medium text-[#1fa0e2]'> Masuk disini</span> </p>
       </div>
     </div>
   )

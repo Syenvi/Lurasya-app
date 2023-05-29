@@ -6,10 +6,12 @@ import {MdOutlineCancel} from 'react-icons/md'
 import {BsBookmarksFill} from 'react-icons/bs'
 import {IoBookmarksOutline} from 'react-icons/io5'
 import {IoSend} from 'react-icons/io5'
-import gambarTempat from '../assets/Dummy/Kafe.jpg'
+import {GoKebabVertical} from 'react-icons/go'
 import gambarwaifu from '../assets/Dummy/Yoimiya.jpeg'
 import { NavLink, useNavigate } from 'react-router-dom'
 import Komentar from '../component/Komentar'
+import {BiEditAlt} from 'react-icons/bi'
+import {BsTrash3Fill} from 'react-icons/bs'
 const DetailTempat = () => {
   const [modal, setModal] = useState(false)
   const animateModal = () =>(modal?'':'translate-y-full')
@@ -22,6 +24,19 @@ const DetailTempat = () => {
     <div className='w-full h-full flex flex-col items-center gap-3'>
         <nav className='w-full flex justify-between p-5 fixed top-0'>
             <span className='bg-white rounded-[50%] p-2 ' onClick={()=>navigate('/')}><IoIosArrowBack/></span>
+            <button className=' group relative'>
+              <span className='bg-white rounded-[50%] p-2 flex justify-center items-center'><GoKebabVertical/></span>
+              <ul className='hidden group-focus:flex absolute flex-col gap-2 p-2 pr-10 pl-10 top-12  right-0 bg-white  rounded-md text-sm'>
+                <li className='flex items-center gap-2  '>
+                  <BiEditAlt/>
+                  <p>Edit</p>
+                </li>
+                <li className='flex items-center gap-2 '>
+                  <BsTrash3Fill/>
+                  <p>Hapus</p>
+                </li>
+              </ul>
+            </button>
         </nav>
       <div className="img-container w-full  overflow-hidden rounded-b-2xl shadow-lg max-h-[75vh]">
         <img src={gambarwaifu} className='w-full h-full object-cover' />

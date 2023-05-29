@@ -7,6 +7,7 @@ import DetailTempat from './pages/DetailTempat'
 import RegisterForm from './component/Register/RegisterForm'
 import RegisterFormAdmin from './component/Register Admin (CRUD)/RegisterFormAdmin'
 import EditProfil from './pages/EditProfil'
+import Edit from './component/Register Admin (CRUD)/Edit'
 
 function App() {
 
@@ -19,6 +20,8 @@ function App() {
         <Route path='/detail/:id' exact element={<DetailTempat/>}/>
         <Route path='/partnership/create' exact element={<RegisterFormAdmin/>}/>
         <Route path='/editprofil/:id' exact element={<EditProfil/>}/>
+        <Route path='/partnership/edit/:id' exact element={<Edit/>}/>
+
       </Routes>
     </BrowserRouter>
   )

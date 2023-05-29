@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Register = () => {
+  // const provinsi = 'Jawa Barat'
   const [provinsi, setProvinsi] = useState([])
   const [idProvinsi, setIdProvinsi] = useState('')
   const [kabupaten, setKabupaten] = useState([])
