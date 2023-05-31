@@ -7,7 +7,7 @@ import {BsBookmarksFill} from 'react-icons/bs'
 import {IoBookmarksOutline} from 'react-icons/io5'
 import {IoSend} from 'react-icons/io5'
 import {GoKebabVertical} from 'react-icons/go'
-import gambarwaifu from '../assets/Dummy/Yoimiya.jpeg'
+import gambarwaifu from '../assets/Dummy/Kafe.jpg'
 import { NavLink, useNavigate } from 'react-router-dom'
 import Komentar from '../component/Komentar'
 import {BiEditAlt} from 'react-icons/bi'
@@ -22,12 +22,12 @@ const DetailTempat = () => {
   return (
     <>
     <div className='w-full h-full flex flex-col items-center gap-3'>
-        <nav className='w-full flex justify-between p-5 fixed top-0'>
+        <nav className='w-full flex justify-between p-5 fixed z-20 top-0'>
             <span className='bg-white rounded-[50%] p-2 ' onClick={()=>navigate('/')}><IoIosArrowBack/></span>
             <button className=' group relative'>
               <span className='bg-white rounded-[50%] p-2 flex justify-center items-center'><GoKebabVertical/></span>
-              <ul className='hidden group-focus:flex absolute flex-col gap-2 p-2 pr-10 pl-10 top-12  right-0 bg-white  rounded-md text-sm'>
-                <li className='flex items-center gap-2  '>
+              <ul className='hidden group-focus:flex absolute flex-col gap-2 p-3  right-0 top-10 bg-white  rounded-md text-sm w-[150px]'>
+                <li className='flex items-center gap-2 '>
                   <BiEditAlt/>
                   <p>Edit</p>
                 </li>
@@ -38,8 +38,9 @@ const DetailTempat = () => {
               </ul>
             </button>
         </nav>
-      <div className="img-container w-full  overflow-hidden rounded-b-2xl shadow-lg max-h-[75vh]">
+      <div className="img-container w-full  overflow-hidden rounded-b-2xl shadow-lg max-h-[75vh] relative z-10">
         <img src={gambarwaifu} className='w-full h-full object-cover' />
+        <div className="maps w-16 h-16 absolute rounded-xl bg-white right-4 bottom-4"></div>
       </div>
       <div className='w-[90%] flex-flex-col gap-2'>
        <div className="flex justify-between w-full items-center ">

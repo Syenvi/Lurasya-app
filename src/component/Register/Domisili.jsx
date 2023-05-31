@@ -30,6 +30,8 @@ const [selectedDesa, setSelectedDesa] = useState('');
     setSelectedProvinsi(selectedOption);
     setSelectedKabupaten('');
     setSelectedKecamatan('');
+    setSelectedDesa('');
+
     // Mendapatkan kabupaten berdasarkan id provinsi yang dipilih
     fetch(`http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedOption.value}.json`)
       .then((response) => response.json())

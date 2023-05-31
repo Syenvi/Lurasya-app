@@ -13,7 +13,7 @@ const CompanyInfo = ({formData,setFormData}) => {
   }
   return (
     <div className='w-full flex flex-col items-center gap-5'>
-       <div className="image-container w-full h-[400px] rounded-xl overflow-hidden relative bg-slate-200">
+       <div className="image-container w-full h-[300px] rounded-xl overflow-hidden relative bg-slate-200">
           {
               image?(
                 <>

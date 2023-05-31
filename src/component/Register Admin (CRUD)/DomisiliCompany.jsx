@@ -175,7 +175,7 @@ console.log(latitude,longitude);
   styles={customStyles}
   placeholder='Pilih Desa'
 />
-<div className="map-container w-full h-[250px]  rounded-md overflow-hidden relative ">
+<div className="map-container w-full h-[200px]  rounded-md overflow-hidden relative ">
                <Map
             google={props.google}
             zoom={12}

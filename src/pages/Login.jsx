@@ -46,7 +46,7 @@ let config = {
     localStorage.setItem('role',response.data.data.role)
     localStorage.setItem('images',response.data.data.images)
     localStorage.setItem('id',response.data.data.id)
-    navigate('/profile')
+    navigate('/')
   })
   .catch((error) => {
     console.log(error);
@@ -92,7 +92,7 @@ let config = {
               <hr className='h-[2px] w-[100vw] '/>
             </span>
             <button
-            className='bg-slate-200 text-slate-700  w-full p-3 rounded-lg flex items-center gap-5 justify-center'
+            className='bg-slate-200 text-slate-700 text-sm  w-full p-3 rounded-lg flex items-center gap-5 justify-center'
             >
               <img src={google} />
               <p>Masuk dengan Google</p>
