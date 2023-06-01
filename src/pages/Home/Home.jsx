@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import Topbar from '../../component/Topbar';
 import kafe from '../../assets/category/kafe.png';
 import minimarket from '../../assets/category/minimarket.png';
@@ -17,10 +17,26 @@ import gambar5 from '../../assets/Dummy/ns--m.png'
 import gambar6 from '../../assets/Dummy/Sagiri.png'
 import gambar7 from '../../assets/Dummy/Yoimiya.jpeg'
 import Onboarding from '../../component/Onboarding';
+import DetailTempat from '../DetailTempat';
 
 const Home = ({modal,setModal,partnerModal,setPartnerModal}) => {
    const user = localStorage.getItem('user')
   const isLoggedIn = user !== null; // Memeriksa apakah pengguna sudah Login
+ const navigate=useNavigate()
+
+{/* ---------- Detail Tempat ---------- */}
+const [showDetail, setShowDetail] = useState(false)
+const handleDetail = () =>{
+  if (window.innerWidth > 768 && showDetail === true) {
+  return <DetailTempat setShowDetail={setShowDetail}/>
+} else if(window.innerWidth < 768 && showDetail === true){
+ navigate('/detail/123')
+}else{
+  return null
+}
+}
+     {/* ---------- Detail Tempat */}
+
   return (
     !isLoggedIn?
     <div className="w-full h-screen  flex relative justify-start items-center">
@@ -35,10 +51,11 @@ const Home = ({modal,setModal,partnerModal,setPartnerModal}) => {
       
     </div>
       :
-    <div className="w-full h-full flex flex-col gap-10 items-center  ">
+    <div className="w-full h-full flex flex-col gap-10 items-center  relative">
+      {handleDetail()}
       <Topbar modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal}/>
       <main className='w-[80%] columns-2 gap-2 mx-auto space-y-2 md:columns-5 md:w-[90%] md:gap-5 md:space-y-5'>
-        <Card src={gambar1}/>
+        <span onClick={()=>setShowDetail(true)}><Card src={gambar1}/></span>
         <Card src={gambar2}/>
         <Card src={gambar3}/>
         <Card src={gambar5}/>
@@ -55,7 +72,6 @@ const Home = ({modal,setModal,partnerModal,setPartnerModal}) => {
         <Card src={gambar5}/>
         <Card src={gambar1}/>
         <Card src={gambar6}/>
-        
       </main>
     </div>
   )

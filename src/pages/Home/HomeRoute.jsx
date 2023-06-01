@@ -10,6 +10,7 @@ import pemasaran from '../../assets/modalPartner/bullhorn.png'
 import gratis from '../../assets/modalPartner/free.png'
 import growth from '../../assets/modalPartner/growth.png'
 import pengusaha from '../../assets/modalPartner/cooperation.png'
+import DetailTempat from '../DetailTempat'
 
 const HomeRoute = () => {
 
@@ -34,6 +35,7 @@ const HomeRoute = () => {
   const navigate = useNavigate()
   return (
     <>
+    
         <Routes>
         <Route path='/' exact element={<Home modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal}/>} />
         <Route path='/profile' exact element={<MyAccount/>} />
@@ -121,7 +123,7 @@ const HomeRoute = () => {
             </div>
           </div>
                   {/* ---------- Partnership ---------- */}
-
+             
     </>
   )
 }

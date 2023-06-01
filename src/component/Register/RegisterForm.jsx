@@ -96,7 +96,7 @@ const RegisterForm = () => {
             }}
             ><MdOutlineArrowBackIos/></span>
         </div>
-            <span className='w-full justify-center flex'><img src={GambarVektor} className='w-[70%]' /></span>
+            <span className='w-full justify-center flex'><img src={GambarVektor} className='w-[60%]' /></span>
       <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col ">
         <div className="top w-full flex flex-col gap-5">
             <h1 className='text-2xl font-semibold '>{FormTitles[page]}</h1>

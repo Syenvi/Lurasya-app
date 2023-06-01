@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const Card = ({src}) => {
   const navigate = useNavigate()
   return (
-    <div onClick={()=>navigate('/detail/123')} className=' rounded-md overflow-hidden cursor-pointer'>
+    <div  className=' rounded-md overflow-hidden cursor-pointer'>
       <img src={src} />
     </div>
   )

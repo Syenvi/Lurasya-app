@@ -110,7 +110,7 @@ const [selectedDesa, setSelectedDesa] = useState('');
     }),
   };
   return (
-    <div className='w-full flex flex-col items-center gap-5'>
+    <div className='w-full flex flex-col items-center gap-2'>
       <Select
        className='w-full rounded-lg bg-slate-200 z-40'
         options={provinsiOptions}

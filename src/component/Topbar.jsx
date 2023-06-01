@@ -4,7 +4,7 @@ import EarthLeft from'../assets/earth left.png'
 import Hamburger from '../assets/Hamburger.png'
 import {BsSearch} from 'react-icons/bs'
 import { NavLink, useNavigate } from 'react-router-dom'
-const Topbar = ({modal,setModal,partnerModal,setPartnerModal}) => {
+const Topbar = ({setModal,setPartnerModal}) => {
   const [hasilKategori,setHasilKategori]=useState('Pilih Kategori')
   const navigate = useNavigate()
   const [showKategori, setShowKategori] = useState(false)
@@ -71,7 +71,7 @@ const Topbar = ({modal,setModal,partnerModal,setPartnerModal}) => {
         <h1 className={navbar?'hidden':' text-white md:text-2xl '}>Hi Kamu,<span className='font-bold'>Mau kemana?</span></h1>
         {/* ------ Greeting ------ */}
         {/* ------ SearchBar ------ */}
-        <div className={navbar?'bg-slate-200 rounded-3xl flex gap-3 items-center justify-between z-20 relative w-full md:w-[40%] h-8 ':'bg-white p-0 h-8 rounded-2xl flex gap-3 items-center z-20 relative w-[80%] md:w-[50%] md:h-12 md:rounded-3xl  '}>
+        <div className={navbar?'bg-slate-200 rounded-3xl flex gap-3 items-center justify-between z-20 relative w-full md:w-[40%] h-7 ':'bg-white p-0 h-7 rounded-2xl flex gap-3 items-center z-20 relative w-[80%] md:w-[50%] md:h-12 md:rounded-3xl  '}>
               <ul className={navbar?`${pilihKategori()} absolute bg-slate-200 rounded-md top-10 shadow-md p-2 min md:top-16 md:left-0 md:p-5`:`${pilihKategori()} absolute bg-white rounded-md top-10  p-2 md:p-5 md:text-base md:top-16 md:rounded-lg md:left-0`}>
                 <li onClick={()=>setHasilKategori('Tempat Ibadah')} className='text-[10px] md:text-base'>Tempat Ibadah</li>
                 <li onClick={()=>setHasilKategori('Minimarket')} className='text-[10px] md:text-base'>Minimarket</li>
