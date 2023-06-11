@@ -11,16 +11,14 @@ import gratis from '../../assets/modalPartner/free.png'
 import growth from '../../assets/modalPartner/growth.png'
 import pengusaha from '../../assets/modalPartner/cooperation.png'
 import DetailTempat from '../DetailTempat'
+import { useStateContext } from '../../Context/StateContext'
+import instance from '../../API/Api'
 
 const HomeRoute = () => {
-
-  const user = localStorage.getItem('user')
-  const isLoggedIn = user !== null; // Memeriksa apakah pengguna sudah login
-  const role = localStorage.getItem('role')
-  const checkRole = role !== 'user'
+  const {currentLogin,setCurrentLogin} =useStateContext()
   const animateModal = () =>(modal?'':'translate-y-full')
   const backgroundModal = ()=> (modal?'flex':'hidden')
-  const animatePartnerModal = () =>(partnerModal?'md:translate-y-[-25%] md:rounded-2xl':'translate-y-full ')
+  const animatePartnerModal = () =>(partnerModal?'md:translate-y-[-10%] md:rounded-2xl':'translate-y-full ')
   const backgroundPartnerModal = ()=> (partnerModal?'flex':'hidden')
   const [modal, setModal] = useState(false)
   const [partnerModal, setPartnerModal] = useState(false);
@@ -29,19 +27,73 @@ const HomeRoute = () => {
     setModal(false); // Menutup modal sebelumnya (jika ada)
     setPartnerModal(true);
   };
-  const handleLogout = ()=>{
-    localStorage.removeItem('user')
-  }
   const navigate = useNavigate()
+  const [selectedId,setSelectedId]=useState('')
+  const [selectedUsername,setSelectedUsername]=useState('')
+
+  const handleLogout = ()=>{
+    localStorage.clear()
+    window.location.reload()
+  }
+
+// ---------- MENGUBAH ROLE MENJADI ADMIN // PARTNER -----------
+const [buttonGabung, setButtonGabung] = useState('Gabung Sekarang')
+const [changeRole, setChangeRole] = useState(false)
+  const handleChangeRole = ()=>{
+    setChangeRole(true)
+    setButtonGabung('Tunggu Beberapa Detik...');
+
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 4000);
+  })
+    .then(() => {
+      setButtonGabung('Hampir Selesai...');
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 2000);
+      });
+    })
+    .then(() => {
+      let data = new FormData();
+      data.append('triger', changeRole);
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: '/update-role/',
+        headers: { 'Authorization': `Bearer ${currentLogin.token}` },
+        data: data
+      };
+
+      return instance.request(config);
+    })
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      localStorage.setItem('role', JSON.stringify(response.data.role));
+      setButtonGabung('Selesai');
+      setButtonGabung('Gabung Sekarang');
+      location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+// ---------- MENGUBAH ROLE MENJADI ADMIN // PARTNER END -----------
+
   return (
     <>
     
-        <Routes>
-        <Route path='/' exact element={<Home modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal}/>} />
-        <Route path='/profile' exact element={<MyAccount/>} />
-        <Route path='/create' exact element={<Bookmark/>}/>
-        </Routes>
-        <Botbar partnerModal={partnerModal} setPartnerModal ={setPartnerModal} isLoggedIn={isLoggedIn}/>
+          <Routes>
+          <Route path='/'  element={<Home modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal} selectedId={selectedId} setSelectedId={setSelectedId} selectedUsername={selectedUsername} setSelectedUsername={setSelectedUsername}/>} />
+          <Route path='/:username/company/:id'  element={<DetailTempat selectedId={selectedId}/> }/>
+          <Route path='/:username'  element={<MyAccount/>} />
+          <Route path='/create'  element={<Bookmark/>}/>
+          </Routes>
+          <Botbar partnerModal={partnerModal} setPartnerModal ={setPartnerModal} />
 
         {/* ---------- Hamburger ---------- */}
         <div className='w-full'>
@@ -51,10 +103,12 @@ const HomeRoute = () => {
               </span>
               <h2 className='font-semibold text-2xl pt-2 pb-2'>Menu</h2>
               {
-                checkRole?null:
+                currentLogin.role === 'Admin'?null:
               <NavLink onClick={handlePartnerModal}><p className='pt-2 pb-2'>Jadi Partner Lurasya</p></NavLink>
               }
-              <NavLink><p className='pt-2 pb-2'>Infromasi Lebih Lanjut</p></NavLink>
+              <NavLink><p className='pt-2 pb-2'>Download Aplikasi</p></NavLink>
+              <NavLink><p className='pt-2 pb-2'>Tentang Kami</p></NavLink>
+
                  
             {/* // Jika pengguna sudah login, tampilkan tombol logout */}
             <button onClick={handleLogout} className='pt-2 pb-2 pl-12 pr-12 rounded-md bg-[#e2f7ff] text-[#1fa0e2]'>Logout</button>
@@ -68,7 +122,7 @@ const HomeRoute = () => {
             </div>
           </div>
           <div className='w-full relative flex justify-center items-center '>
-            <div className={`w-full h-auto rounded-t-3xl bg-white flex flex-col justify-center z-30 fixed bottom-0 duration-300 ease-in-out ${animatePartnerModal()}  md:h-[70vh] md:w-[70%] `}>
+            <div className={`w-full overflow-hidden h-auto rounded-t-3xl bg-white flex flex-col justify-center z-30 fixed bottom-0 duration-300 ease-in-out ${animatePartnerModal()}  md:h-[80vh] md:w-[80%] `}>
               <div className="top w-full shadow-lg sticky top-0 h-[7vh] flex p-5 md:shadow-none md:justify-end md:items-center md:fixed">
               <span onClick={()=>setPartnerModal(false)} >
                 <img src={cancel} className='w-5 ' />
@@ -115,7 +169,7 @@ const HomeRoute = () => {
                     <img src={pengusaha}className='w-10' />
                     <img src={pemasaran}className='w-10' />
                   </span>
-                  <button onClick={()=>navigate('partnership/create')} className='w-full bg-blue-300 p-2 rounded-md text-sm '>Gabung Sekarang</button>
+                  <button onClick={()=>handleChangeRole()} className='w-full bg-blue-300 p-2 rounded-md text-sm '>{buttonGabung}</button>
                 </div>
               </div>
           </div>

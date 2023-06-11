@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const Card = ({src}) => {
   const navigate = useNavigate()
   return (
-    <div  className=' rounded-md overflow-hidden cursor-pointer'>
+    <div  className=' rounded-md overflow-hidden '>
       <img src={src} />
     </div>
   )

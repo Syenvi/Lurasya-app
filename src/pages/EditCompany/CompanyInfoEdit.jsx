@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import tambahGambar from '../../assets/image.png'
 
-const CompanyInfo = ({formData,setFormData}) => {
+const CompanyInfoEdit   = ({formData,setFormData}) => {
   const [image, setImage] = useState(null)
   // const [photo, setPhoto] = useState(null)
   //fungsi untuk event onChange pada input type file
-  useEffect(()=>{
-    if(formData.photoCompany !== null){
-    setImage(URL.createObjectURL(formData.photoCompany))
-  }
-  },[])
   const fileChangeHandler = (e)=>{
     //Mengambil value bukan (e.target.value) tetapi (e.target.files[0])
     const selectedFile = e.target.files[0]
@@ -47,4 +42,4 @@ const CompanyInfo = ({formData,setFormData}) => {
   )
 }
 
-export default CompanyInfo
+export default CompanyInfoEdit

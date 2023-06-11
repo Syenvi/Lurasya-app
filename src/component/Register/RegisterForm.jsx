@@ -9,11 +9,12 @@ import instance from '../../API/Api'
 
 const RegisterForm = () => {
   const navigate =useNavigate()
-    const [page, setPage] = useState(0)
-    const GambarVektor = [gambar]
+  const GambarVektor = [gambar]
+  const [page, setPage] = useState(0)
     const FormTitles = ['Data Diri','Buat Akun','Domisili']
     const [formData, setFormData] = useState({
         name :'',
+        username:'',
         email :'',
         password :'',
         password_confirmation :'',
@@ -31,8 +32,12 @@ const RegisterForm = () => {
             return <Domisili formData={formData} setFormData={setFormData}/>
         }
     } 
+    
     const isComplete = () => {
         if (page === 0 && (formData.name.trim() === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.name))) {
+          alert('Nama tidak valid. Harus terdiri dari minimal 4 karakter alfanumerik')
+          return false;
+        }else if(page === 0 && (formData.username.trim() === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.username))) {
           alert('Username tidak valid. Harus terdiri dari minimal 4 karakter alfanumerik')
           return false;
         } else if (page === 1 && (formData.email.trim() === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) )) {
@@ -58,7 +63,7 @@ const RegisterForm = () => {
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
-          url: '/registrasi-user',
+          url: '/auth-registration',
           headers: {},
           data : formData
         };
@@ -66,27 +71,29 @@ const RegisterForm = () => {
         instance.request(config)
         .then((response) => {
           console.log(JSON.stringify(response.data));
-          alert('bisa COk')
+          if (response.data && response.data.username && response.data.username.length > 0) {
+            alert('Gagal: ' + response.data.username[0]);
+            navigate('/')
+          }else if (response.data && response.data.email && response.data.email.length > 0) {
+            alert('Gagal: ' + response.data.email[0]);
+            navigate('/')
+          }else {
+            alert('Berhasil');
+            localStorage.setItem('emailVerif',response.data.data.email)
+            localStorage.setItem('tokenVerif',response.data.access_token)
+            navigate('/verifikasi-otp')
+          }
         })
         .catch((error) => {
           console.log(error);
           // alert('err')
-              alert(`Form Telah Disubmit
-              Cek data anda
-              ${formData.name}
-              ${formData.email}
-              ${formData.provinsi}
-              ${formData.kecamatan}
-              ${formData.kota}
-              ${formData.desa}
-              `);
         });
       }}
 
   return (
-    <div className='from w-full h-screen flex flex-col md:flex-row justify-between items-center'>
-        <div className="header w-full  flex flex-col justify-between p-5  ">
-            <span className='text-[#1fa0e2] w-full text-xl'
+    <div className='from w-full h-screen flex flex-col justify-between items-center md:flex-row md:justify-center md:bg-[url(https://lonelyplanetstatic.imgix.net/marketing/2022/BIT/guidebooks_background_desktop-2022b.jpg?auto=format&fit=clip&w=1920&q=40)] bg-cover'>
+        <div className="header w-full  flex flex-col justify-between p-5 md:h-[80%] md:w-[60%]  md:rounded-l-2xl md:bg-white     backdrop-blur-md  ">
+            <span className='text-[#1fa0e2] w-full text-xl h-[5%]'
             onClick={()=>{
               if(page === 0){
                 navigate('/')
@@ -95,11 +102,17 @@ const RegisterForm = () => {
               }
             }}
             ><MdOutlineArrowBackIos/></span>
+              <div className='md:flex flex-col w-full h-full justify-center items-start pl-10 hidden gap-5'>
+                <h3 className='text-[2rem] w-[60%] font-bold text-[#1fa0e2]'>Perjalanan Anda dimulai dari sini</h3>
+                <p>Buat akun untuk masuk ke halaman utama</p>
+            </div>
         </div>
-            <span className='w-full justify-center flex'><img src={GambarVektor} className='w-[60%]' /></span>
-      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col ">
+
+            <span className='w-full justify-center flex md:hidden'><img src={GambarVektor} className='w-[60%]' /></span>
+
+      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col md:w-[25%] md:h-[80vh] md:rounded-none md:rounded-r-2xl md:bg-[rgba(255,255,255,0.1)] backdrop-blur-md ">
         <div className="top w-full flex flex-col gap-5">
-            <h1 className='text-2xl font-semibold '>{FormTitles[page]}</h1>
+            <h1 className='text-2xl font-semibold md:text-3xl md:text-white'>{FormTitles[page]}</h1>
         <div className="body w-full flex flex-col gap-5 items-end ">
             {PageDisplay()}
         </div>
@@ -134,7 +147,7 @@ const RegisterForm = () => {
             >{page === FormTitles.length - 1 ? 'Submit' : 'Selanjutnya' }</button>
         </div>
         </div>
-            <p onClick={()=>navigate('/login')} className='text-sm mt-5 w-full text-center'>Sudah punya akun ?<span className='font-medium text-[#1fa0e2]'> Masuk disini</span> </p>
+            <p onClick={()=>navigate('/auth/login')} className='text-sm mt-5 w-full text-center md:text-white'>Sudah punya akun ?<span className='font-medium text-[#1fa0e2]'> Masuk disini</span> </p>
       </div>
     </div>
   )

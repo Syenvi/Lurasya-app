@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import {MdOutlineArrowBackIos} from 'react-icons/md'
 import axios from 'axios'
-import CompanyInfo from './CompanyInfo'
-import DomisiliCompany from './DomisiliCompany'
 import {IoIosArrowBack} from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import instance from '../../API/Api'
-import { useStateContext } from '../../Context/StateContext'
+import CompanyInfoEdit from './CompanyInfoEdit'
+import DomisiliCompanyEdit from './DomisiliCompanyEdit'
 
-const RegisterFormAdmin = () => {
-const {currentLogin,setCurrentLogin}=useStateContext()
+const EditCompany = () => {
+
+  
+
 const navigate=useNavigate()
   const [formData, setFormData] = useState({
     namaCompany :'',
@@ -25,12 +26,12 @@ const navigate=useNavigate()
     lng:''
 })
   const [page, setPage] = useState(0)
-    const FormTitles = ['Company Info','Alamat Company']
+    const FormTitles = ['Infomasi Company','Alamat Company']
   const PageDisplay = ()=>{
     if(page == 0){
-        return <CompanyInfo formData={formData} setFormData={setFormData}/>
+        return <CompanyInfoEdit formData={formData} setFormData={setFormData}/>
     }else{
-        return <DomisiliCompany formData={formData} setFormData={setFormData}/>
+        return <DomisiliCompanyEdit formData={formData} setFormData={setFormData}/>
     }
 } 
 
@@ -56,9 +57,8 @@ const handleSubmit =()=>{
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: '/create-store',
+      url: '/create-admin/1',
       headers: { 
-        'Authorization': `Bearer ${currentLogin.token}`
       },
       data : data
     };
@@ -132,7 +132,7 @@ const handleSubmit =()=>{
           <IoIosArrowBack/>
           </span>
 <h1 className='text-md font-medium text-white md:hidden'>{FormTitles[page]}</h1>
-<h1 className='hidden ml-5 font-bold text-2xl  text-white md:flex '> Create </h1>
+<h1 className='hidden ml-5 font-bold text-2xl  text-white md:flex '> Edit Company </h1>
         </div>
       {/* ---------- Header/Navbar ---------- */}
       {/* ---------- Konten/Body ---------- */}
@@ -140,16 +140,16 @@ const handleSubmit =()=>{
 
           <div className="body h-[85vh] hidden md:flex w-full">
           <div className="left w-[50%] h-full p-5">
-            <CompanyInfo formData={formData} setFormData={setFormData}/>
+            <CompanyInfoEdit formData={formData} setFormData={setFormData}/>
           </div>
           <div className="right w-[50%] h-full p-5 ">
-            <DomisiliCompany formData={formData} setFormData={setFormData}/>
+            <DomisiliCompanyEdit formData={formData} setFormData={setFormData}/>
           </div>
           </div>
           <div className="eksekusi h-[5vh] w-full flex justify-end   p-5 items-center">
 
           <button 
-            className='bg-[#1fa0e2] text-sm font-medium text-white  p-2 pl-5 pr-5 rounded-lg hidden md:flex'
+            className='bg-[#1fa0e2] text-sm font-medium text-white  p-2 pl-5 pr-5 rounded-lg'
             onClick={() => {handleSubmit()}}>Submit</button>
           </div>
 
@@ -167,6 +167,7 @@ const handleSubmit =()=>{
             disabled={page === 0}
             onClick={()=>setPage(page-1)}>Kembali</button>
             <button 
+            disabled= { ()=>{  if (width <= 768) {isComplete()}}}
             className='bg-[#1fa0e2] text-sm font-medium text-white disabled:opacity-60 p-2 rounded-lg'
             onClick={() => {
               const width = window.innerWidth;
@@ -184,7 +185,6 @@ const handleSubmit =()=>{
                   // `);
                   handleSubmit()
                 } else {
-
                   // Tombol "Selanjutnya" ditekan
                   setPage(page + 1);
                 }}
@@ -199,4 +199,4 @@ const handleSubmit =()=>{
   )
 }
 
-export default RegisterFormAdmin;
+export default EditCompany;

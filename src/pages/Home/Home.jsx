@@ -18,60 +18,111 @@ import gambar6 from '../../assets/Dummy/Sagiri.png'
 import gambar7 from '../../assets/Dummy/Yoimiya.jpeg'
 import Onboarding from '../../component/Onboarding';
 import DetailTempat from '../DetailTempat';
+import { useStateContext } from '../../Context/StateContext'
+import instance from '../../API/Api';
 
-const Home = ({modal,setModal,partnerModal,setPartnerModal}) => {
-   const user = localStorage.getItem('user')
-  const isLoggedIn = user !== null; // Memeriksa apakah pengguna sudah Login
+const Home = ({modal,setModal,partnerModal,setPartnerModal,setSelectedId,selectedId,selectedUsername,setSelectedUsername}) => {
+  //------ STATE UNTUK DATA DARI BACKEND ------
+
+  // const [namaAdmin, setNamaAdmin] = useState('')
+  // const [namaCompany, setNamaCompany] = useState('')
+  // const [profilAdmin,setProfilAdmin ] = useState('')
+  // const [kategoriCompany, setKategoriCompany] = useState('')
+  // const [fotoCompany, setFotoCompany] = useState('')
+  // const [komentarCompany, setKomentarCompany] = useState('')
+  // const [kecamatan, setKecamatan] = useState('')
+  // const [kota, setKota] = useState('')
+  // const [provinsi, setProvinsi] = useState('')
+  
+  const [dataCompany, setDataCompany] = useState([])
+
+  //------ STATE UNTUK DATA DARI BACKEND SELESAI ------
+
+
+  // ------ Mengambil Semua Data ------
+  useEffect(()=>{
+    if(currentLogin.role === ''){
+      navigate('/')
+    }
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/read-all',
+      headers: {}
+    };
+    
+    instance.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      setDataCompany(response.data.user)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  },[])
+    // ------ Mengambil Semua Data End ------
+
  const navigate=useNavigate()
+ const {currentLogin,setCurrentLogin} =useStateContext()
 
 {/* ---------- Detail Tempat ---------- */}
-const [showDetail, setShowDetail] = useState(false)
-const handleDetail = () =>{
-  if (window.innerWidth > 768 && showDetail === true) {
-  return <DetailTempat setShowDetail={setShowDetail}/>
-} else if(window.innerWidth < 768 && showDetail === true){
- navigate('/detail/123')
-}else{
-  return null
-}
-}
-     {/* ---------- Detail Tempat */}
 
+// ------ INI INGIN KAYA IG TAPI BLM BISA ------
+// const [showDetail, setShowDetail] = useState(false)
+// const handleDetail = (username,id) =>{
+//   console.log(username);
+//   if (window.innerWidth > 768 ) {
+//   setSelectedId(id)
+//   setSelectedUsername(username)
+//   window.history.pushState(null, '', `/${username}/company/${id}`)
+//   setShowDetail(true)
+
+//     // navigate('/detail/123')
+// } else if(window.innerWidth < 768 ){
+//   setSelectedId(id)
+//   setSelectedUsername(username)
+//  navigate(`/${username}/company/${id}`)
+
+// }else{
+//   return null
+// }
+// }
+// ------ INI INGIN KAYA IG TAPI BLM BISA ------
+
+     {/* ---------- Detail Tempat END ------*/}
+console.log(currentLogin);
   return (
-    !isLoggedIn?
+    currentLogin.name === null?
     <div className="w-full h-screen  flex relative justify-start items-center">
   <img src="https://images5.alphacoders.com/605/605588.jpg" className='w-full h-full object-cover absolute scale-x-[-1]' />
   <div className="w-full h-full absolute bg-black opacity-75"></div>
-  <h1 className='text-white text-[40px] w-[40%] font-bold absolute ml-16'>Cari tempat yang kamu ingin tuju disini !</h1>
-<div className="left w-[70%] h-screen  hidden md:flex  relative">
+  <h1 className='text-white text-[40px] w-[40%] font-bold absolute ml-16'>Cari tempat yang ingin kamu tuju disini !</h1>
+<div className="left w-[60%] h-screen  hidden md:flex  relative">
 </div>
-<div className="right w-full md:w-[30%] md:rounded-l-2xl bg-slate-100 fixed right-0 shadow-xl  ">
+<div className="right w-full md:w-[40%] md:rounded-l-2xl animasi-background fixed right-0 shadow-xl  ">
       <Onboarding/>
 </div>
       
     </div>
       :
     <div className="w-full h-full flex flex-col gap-10 items-center  relative">
-      {handleDetail()}
+      {/* {
+        showDetail?<DetailTempat setShowDetail={setShowDetail} selectedUsername={selectedUsername} selectedId={selectedId} showDetail={showDetail}/>:null
+      } */}
       <Topbar modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal}/>
       <main className='w-[80%] columns-2 gap-2 mx-auto space-y-2 md:columns-5 md:w-[90%] md:gap-5 md:space-y-5'>
-        <span onClick={()=>setShowDetail(true)}><Card src={gambar1}/></span>
-        <Card src={gambar2}/>
-        <Card src={gambar3}/>
-        <Card src={gambar5}/>
-        <Card src={gambar6}/>
-        <Card src={gambar7}/>
-        <Card src={gambar5}/>
-        <Card src={gambar6}/>
-        <Card src={gambar4}/>
-        <Card src={gambar7}/>
-        <Card src={gambar2}/>
-        <Card src={gambar4}/>
-        <Card src={gambar3}/>
-        <Card src={gambar3}/>
-        <Card src={gambar5}/>
-        <Card src={gambar1}/>
-        <Card src={gambar6}/>
+        {
+          dataCompany.map((item,id)=>{
+            console.log(dataCompany)
+            return (
+              <button onClick={()=>navigate(`/${item.username}/company/${item.id}`)}>
+                <Card src={item.images}/>
+              </button>
+              )
+            })
+        }
       </main>
     </div>
   )

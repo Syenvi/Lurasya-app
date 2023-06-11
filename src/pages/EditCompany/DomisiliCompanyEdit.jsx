@@ -3,7 +3,7 @@ import { IoIosArrowDropdown } from 'react-icons/io';
 import Select from 'react-select';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
-const DomisiliCompany = ({formData,setFormData,...props}) => {
+const DomisiliCompanyEdit = ({formData,setFormData,...props}) => {
   const [provinsiOptions, setProvinsiOptions] = useState([]);
   const [selectedProvinsi, setSelectedProvinsi] = useState('');
   const [kabupatenOptions, setKabupatenOptions] = useState([]);
@@ -156,8 +156,6 @@ console.log(latitude,longitude);
         onChange={handleProvinsiChange}
         styles={customStyles}
         placeholder='Pilih Provinsi'
-        defaultInputValue={formData.provinsi}
-
       />
       <Select 
          className='w-full rounded-md bg-slate-200 z-40'
@@ -166,8 +164,6 @@ console.log(latitude,longitude);
         onChange={handleKabupatenChange}
         styles={customStyles}
         placeholder='Pilih Kabupaten'
-        defaultInputValue={formData.kota}
-
       />
       <Select 
          className='w-full rounded-md bg-slate-200 z-30'
@@ -175,8 +171,6 @@ console.log(latitude,longitude);
         onChange={handleKecamatanChange}
         styles={customStyles}
         placeholder='Pilih Kecamatan'
-        defaultInputValue={formData.kecamatan}
-
       />
       <Select 
          className='w-full rounded-md bg-slate-200 z-20'
@@ -185,8 +179,6 @@ console.log(latitude,longitude);
   onChange={handleDesaChange}
   styles={customStyles}
   placeholder='Pilih Desa'
-  defaultInputValue={formData.desa}
-
 />
 <div className="map-container w-full h-[200px] md:h-[300px] rounded-md overflow-hidden relative ">
                <Map
@@ -207,5 +199,5 @@ console.log(latitude,longitude);
 
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyBkHT9y6Ev4L14Ui41GAKpjJq5a1o8T9fE'
-})(DomisiliCompany);
+})(DomisiliCompanyEdit);
 

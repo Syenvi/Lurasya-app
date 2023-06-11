@@ -7,24 +7,29 @@ import DetailTempat from './pages/DetailTempat'
 import RegisterForm from './component/Register/RegisterForm'
 import RegisterFormAdmin from './component/Register Admin (CRUD)/RegisterFormAdmin'
 import EditProfil from './pages/EditProfil'
-import Edit from './component/Register Admin (CRUD)/Edit'
 import Onboarding from './component/Onboarding'
 import './index.css'
+
+import Auth from './pages/Auth'
+import EditCompany from './pages/EditCompany/EditCompany'
+import VerifikasiOtp from './pages/VerifikasiOtp'
+import ForgotPassword from './pages/Forgot Password/ForgotPassword'
+import ResetPassword from './pages/Forgot Password/ResetPassword'
+import { StateContext,useStateContext } from './Context/StateContext'
 
 function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/*' exact element={<HomeRoute/>}/>
-        <Route path='/login' exact element={<Login/>}/>
-        <Route path='/register' exact element={<RegisterForm/>}/>
-        <Route path='/detail/:id' exact element={<DetailTempat/>}/>
-        <Route path='/partnership/create' exact element={<RegisterFormAdmin/>}/>
-        <Route path='/editprofil/:id' exact element={<EditProfil/>}/>
-        <Route path='/partnership/edit/:id' exact element={<Edit/>}/>
-        
-
+     <Routes>
+        <Route path="/auth/*" element={<Auth />} />
+        <Route path="/*" element={<StateContext><HomeRoute /></StateContext>} />
+        <Route path="/partnership/create" exact element={<StateContext><RegisterFormAdmin /></StateContext>} />
+        <Route path="/editprofil/:username" element={<StateContext><EditProfil /></StateContext>} />
+        <Route path="/:username/companyedit/:id" exact element={<StateContext><EditCompany /></StateContext>} />
+        <Route path="/verifikasi-otp" exact element={<StateContext><VerifikasiOtp /></StateContext>} />
+        <Route path="/forgot-password" exact element={<StateContext><ForgotPassword /></StateContext>} />
+        <Route path="/reset-password" exact element={<StateContext><ResetPassword /></StateContext>} />
       </Routes>
     </BrowserRouter>
   )

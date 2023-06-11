@@ -25,8 +25,8 @@ const Onboarding = () => {
         </div>
 
     <div className="flex flex-col gap-3 w-full items-center">
-    <button onClick={()=>navigate('/login')} className="w-full bg-white border border-[#1fa0e2] text-[#1fa0e2] font-medium p-3 rounded-lg md:w-[80%] md:p-2 md:text-xs">Masuk</button>
-    <button onClick={()=>navigate('/register')} className="w-full bg-[#1fa0e2] border border-[#1fa0e2] text-white font-medium p-3 rounded-lg md:w-[80%] md:p-2 md:text-xs">Buat Akun</button>
+    <button onClick={()=>navigate('/auth/login')} className="w-full bg-white border border-white text-[#1fa0e2] font-medium p-3 rounded-lg md:w-[80%] md:p-2 md:text-xs">Masuk</button>
+    <button onClick={()=>navigate('/auth/register')} className="w-full bg-[#1fa0e2] border border-[#1fa0e2] text-white font-medium p-3 rounded-lg md:w-[80%] md:p-2 md:text-xs">Buat Akun</button>
     </div>
     <p className="text-xs text-center md:w-[70%] md:text-[10px] ">Dengan melanjutkan, Anda menyetujui persyaratan layanan dan kebijakan privasi kami</p>
     </div>
