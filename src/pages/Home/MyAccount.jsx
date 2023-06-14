@@ -15,6 +15,7 @@ const MyAccount = ({partnerModal,setPartnerModal}) => {
 
     const [profilNama, setProfilNama] = useState('')
     const [profilUsername, setProfilUsername] = useState('')
+    const [profilRole, setProfilRole] = useState('')
     const [profilPhoto,setProfilPhoto]=useState('')
     const [profilLikes,setProfilLikes]=useState('')
     const [profilPost,setProfilPost]=useState('')
@@ -32,11 +33,7 @@ const MyAccount = ({partnerModal,setPartnerModal}) => {
 const username = useParams()
 // {------ Mengambil Param Username dari Link ------}
     useEffect(()=>{
-     if(currentLogin.role === 'Admin'){
-      setActiveTab('post')
-     }else{
-      setActiveTab('like')
-     }
+    
 let config = {
   method: 'post',
   maxBodyLength: Infinity,
@@ -53,9 +50,10 @@ instance.request(config)
   setProfilNama(profil.name)
   setProfilUsername(profil.username)
   setProfilPhoto(profil.profile)
+  setProfilRole(profil.role)
   setProfilBiodata(profil.biodata)
   setProfilLikes(response.data.likes)
-  setProfilPost(response.data.image.length)
+  setProfilPost(response.data.content.length)
   setProfilCompany(response.data.content)
   setProfilLiked(response.data.liked)
   setProfilBookmarks(response.data.marked)
@@ -65,6 +63,14 @@ instance.request(config)
 });
 
     },[username])
+
+  useEffect(()=>{
+    if(profilRole === 'Admin'){
+      setActiveTab('post')
+     }else{
+      setActiveTab('like')
+     }
+  },[profilRole])
 // {------ PERTAMA KALI LOADING HALAMAN ------}
 
 
@@ -76,13 +82,13 @@ instance.request(config)
       return <>
       {profilCompany.map((item,index) => {
         return (
-          <NavLink >
+          <span onClick={()=>navigate(`/${item.username}/company/${item.id}`)}>
             <Feed
               key={item.id}
               src={item.images}
               id={item.id}
             />
-          </NavLink>
+          </span>
         );
       })}
       </>
@@ -92,13 +98,13 @@ instance.request(config)
       return <>
         {profilLiked.map((item,index) => {
         return (
-          <NavLink>
+          <span onClick={()=>navigate(`/${item.username}/company/${item.id}`)}>
             <Feed
               key={index}
               src={item.images}
               id={item.id}
             />
-          </NavLink>
+          </span>
         );
       })}
       </>;
@@ -107,13 +113,13 @@ instance.request(config)
       return <>    
       {profilBookmarks.map((item,index) => {
         return (
-          <NavLink>
+          <span onClick={()=>navigate(`/${item.username}/company/${item.id}`)}>
             <Feed
               key={index}
               src={item.images}
               id={item.id}
             />
-          </NavLink>
+          </span>
         );
       })}
       </>;
@@ -126,8 +132,8 @@ instance.request(config)
       <span className='text-md md:text-xl font-bold absolute left-5' onClick={()=>navigate('/')}><BiArrowBack/></span>
       <h1 className="text-center text-sm md:text-lg">{profilNama}</h1>
         </div>    
-      <div className="img-container rounded-[50%] w-[100px] overflow-hidden md:w-[150px] ">
-        <img src={profilPhoto} alt="Profile" />
+      <div className="img-container rounded-[50%] w-[100px] h-[100px] overflow-hidden md:w-[150px] md:h-[150px]">
+        <img src={profilPhoto} alt="Profile" className='w-full h-full object-cover'/>
       </div>
       <div className="info gap-3 flex flex-col items-center w-full ">
         <div className="total flex w-[20%] justify-between md:w-[10%]">
@@ -156,7 +162,7 @@ instance.request(config)
         <div className="w-full container-pbl dan konten">
         <div className="pbl flex border-b-2 w-full justify-evenly sticky top-8 bg-white md:text-2xl md:static">
           {
-            currentLogin.role != 'user' ? 
+            profilRole === 'Admin' ? 
             <NavLink className={activeLink('post')} onClick={()=>setActiveTab('post')}>
           <span className='flex flex-col items-center justify-center'>
           <CgFeed />

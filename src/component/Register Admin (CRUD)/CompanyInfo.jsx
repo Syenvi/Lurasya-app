@@ -22,7 +22,7 @@ const CompanyInfo = ({formData,setFormData}) => {
   }
   return (
     <div className='w-full flex flex-col items-center gap-5 h-full'>
-       <div className="image-container w-full h-[300px] md:h-[400px] rounded-xl overflow-hidden relative bg-slate-200">
+       <div className="image-container w-full h-[300px] md:h-[320px] rounded-xl overflow-hidden relative bg-slate-200">
           {
               image?(
                 <>
@@ -40,9 +40,18 @@ const CompanyInfo = ({formData,setFormData}) => {
               )
             }
           </div>
-          <input type="text" className='w-full p-2 rounded-lg bg-slate-200' placeholder='Nama Company' value={formData.namaCompany} onChange={(e)=>setFormData({...formData,namaCompany:e.target.value})}/>
-          <input type="text" className='w-full p-2 rounded-lg bg-slate-200' placeholder='Type Company' value={formData.typeCompany} onChange={(e)=>setFormData({...formData,typeCompany:e.target.value})}/>
-          <input type="text" className='w-full p-2 rounded-lg bg-slate-200' placeholder='Telp.' value={formData.phone_number} onChange={(e)=>setFormData({...formData,phone_number:e.target.value})}/>
+          <input type="text" className='w-full p-2 rounded-lg bg-slate-200 outline-[#1fa0e2] Company' value={formData.namaCompany} onChange={(e)=>setFormData({...formData,namaCompany:e.target.value})} placeholder='Masukkan Nama Company'/>
+          <select  className='w-full p-2 rounded-lg bg-slate-200 outline-[#1fa0e2]' value={formData.typeCompany} onChange={(e)=>setFormData({...formData,typeCompany:e.target.value})}>
+            <option value=''>Tipe Company</option>
+            <option value="Kafe">Kafe</option>
+            <option value="Tempat Wisata">Tempat Wisata</option>
+            <option value="Minimarket">Minimarket</option>
+            <option value="Hotel">Hotel</option>
+            <option value="Angkringan">Angkringan</option>
+          </select>
+          <input type="text" className='w-full p-2 rounded-lg bg-slate-200 outline-[#1fa0e2]' placeholder='Masukkan Nomor Telepon' value={formData.phone_number} onChange={(e)=>setFormData({...formData,phone_number:e.target.value})}/>
+          <textarea className='w-full p-2 rounded-lg bg-slate-200 outline-[#1fa0e2]'placeholder='Masukkan Deskripsi'  value={formData.deskripsi} onChange={(e)=>setFormData({...formData,deskripsi:e.target.value})}/>
+
     </div>
   )
 }

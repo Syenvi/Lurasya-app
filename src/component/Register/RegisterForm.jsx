@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SignUp from './SignUp'
 import Domisili from './Domisili'
 import PersonalInfo from './PersonalInfo'
@@ -6,10 +6,17 @@ import {MdOutlineArrowBackIos} from 'react-icons/md'
 import gambar from '../../assets/RegisterImg/6310507.jpg'
 import { useNavigate } from 'react-router-dom'
 import instance from '../../API/Api'
+import gambarTravel from '../../assets/pngwing.com.png'
 
 const RegisterForm = () => {
   const navigate =useNavigate()
+  useEffect(()=>{
+    if(localStorage.getItem('name') !== null ){
+      navigate('/')
+    }
+  },[])
   const GambarVektor = [gambar]
+  const [buttonRegister, setButtonRegister] = useState('Buat Akun')
   const [page, setPage] = useState(0)
     const FormTitles = ['Data Diri','Buat Akun','Domisili']
     const [formData, setFormData] = useState({
@@ -34,7 +41,7 @@ const RegisterForm = () => {
     } 
     
     const isComplete = () => {
-        if (page === 0 && (formData.name.trim() === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.name))) {
+        if (page === 0 && (formData.name === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.name))) {
           alert('Nama tidak valid. Harus terdiri dari minimal 4 karakter alfanumerik')
           return false;
         }else if(page === 0 && (formData.username.trim() === "" || !/^[a-zA-Z0-9_]{4,}$/.test(formData.username))) {
@@ -59,6 +66,7 @@ const RegisterForm = () => {
       };
       
       const handleSubmit =()=>{
+        setButtonRegister('Sedang Membuat Akun...')
        if( isComplete()){
         let config = {
           method: 'post',
@@ -79,6 +87,7 @@ const RegisterForm = () => {
             navigate('/')
           }else {
             alert('Berhasil');
+            setButtonRegister('Buat Akun')
             localStorage.setItem('emailVerif',response.data.data.email)
             localStorage.setItem('tokenVerif',response.data.access_token)
             navigate('/verifikasi-otp')
@@ -86,13 +95,14 @@ const RegisterForm = () => {
         })
         .catch((error) => {
           console.log(error);
+          setButtonRegister('Buat Akun')
           // alert('err')
         });
       }}
 
   return (
-    <div className='from w-full h-screen flex flex-col justify-between items-center md:flex-row md:justify-center md:bg-[url(https://lonelyplanetstatic.imgix.net/marketing/2022/BIT/guidebooks_background_desktop-2022b.jpg?auto=format&fit=clip&w=1920&q=40)] bg-cover'>
-        <div className="header w-full  flex flex-col justify-between p-5 md:h-[80%] md:w-[60%]  md:rounded-l-2xl md:bg-white     backdrop-blur-md  ">
+    <div className='from w-full h-screen flex flex-col justify-between items-center md:flex-row md:justify-center md:bg-[url(https://img.freepik.com/free-vector/realistic-travel-background-with-elements_52683-77784.jpg?w=740&t=st=1686709029~exp=1686709629~hmac=0144bdcb8c32086c9fbf4341be0565d89d65c7b056a9077c79f8b9840edb6d5b)] bg-cover'>
+        <div className="header w-full  flex flex-col justify-between p-5 md:h-[80%] md:w-[60%]  md:rounded-l-2xl md:bg-white  ">
             <span className='text-[#1fa0e2] w-full text-xl h-[5%]'
             onClick={()=>{
               if(page === 0){
@@ -103,6 +113,7 @@ const RegisterForm = () => {
             }}
             ><MdOutlineArrowBackIos/></span>
               <div className='md:flex flex-col w-full h-full justify-center items-start pl-10 hidden gap-5'>
+                <img src={gambarTravel} className='w-[200px] ' alt="" />
                 <h3 className='text-[2rem] w-[60%] font-bold text-[#1fa0e2]'>Perjalanan Anda dimulai dari sini</h3>
                 <p>Buat akun untuk masuk ke halaman utama</p>
             </div>
@@ -110,7 +121,7 @@ const RegisterForm = () => {
 
             <span className='w-full justify-center flex md:hidden'><img src={GambarVektor} className='w-[60%]' /></span>
 
-      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col md:w-[25%] md:h-[80vh] md:rounded-none md:rounded-r-2xl md:bg-[rgba(255,255,255,0.1)] backdrop-blur-md ">
+      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col md:w-[25%] md:h-[80vh] md:rounded-none md:rounded-r-2xl md:bg-[rgba(0,0,0,0.12)] backdrop-blur-md ">
         <div className="top w-full flex flex-col gap-5">
             <h1 className='text-2xl font-semibold md:text-3xl md:text-white'>{FormTitles[page]}</h1>
         <div className="body w-full flex flex-col gap-5 items-end ">
@@ -144,7 +155,7 @@ const RegisterForm = () => {
             }
             }}
             className='bg-[#1fa0e2] text-white  p-2 rounded-lg'
-            >{page === FormTitles.length - 1 ? 'Submit' : 'Selanjutnya' }</button>
+            >{page === FormTitles.length - 1 ? `${buttonRegister}` : 'Selanjutnya' }</button>
         </div>
         </div>
             <p onClick={()=>navigate('/auth/login')} className='text-sm mt-5 w-full text-center md:text-white'>Sudah punya akun ?<span className='font-medium text-[#1fa0e2]'> Masuk disini</span> </p>

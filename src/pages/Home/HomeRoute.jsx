@@ -89,7 +89,6 @@ const [changeRole, setChangeRole] = useState(false)
     
           <Routes>
           <Route path='/'  element={<Home modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal} selectedId={selectedId} setSelectedId={setSelectedId} selectedUsername={selectedUsername} setSelectedUsername={setSelectedUsername}/>} />
-          <Route path='/:username/company/:id'  element={<DetailTempat selectedId={selectedId}/> }/>
           <Route path='/:username'  element={<MyAccount/>} />
           <Route path='/create'  element={<Bookmark/>}/>
           </Routes>

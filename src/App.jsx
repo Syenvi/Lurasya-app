@@ -24,6 +24,7 @@ function App() {
      <Routes>
         <Route path="/auth/*" element={<Auth />} />
         <Route path="/*" element={<StateContext><HomeRoute /></StateContext>} />
+        <Route path='/:username/company/:id'  element={<StateContext><DetailTempat/></StateContext> }/>
         <Route path="/partnership/create" exact element={<StateContext><RegisterFormAdmin /></StateContext>} />
         <Route path="/editprofil/:username" element={<StateContext><EditProfil /></StateContext>} />
         <Route path="/:username/companyedit/:id" exact element={<StateContext><EditCompany /></StateContext>} />

@@ -147,7 +147,7 @@ console.log(latitude,longitude);
     }),
   };
   return (
-    <div className='w-full flex flex-col items-center gap-5 h-full'>
+    <div className='w-full flex flex-col items-center gap-5 md:gap-2 h-full'>
       <input type="text" placeholder='Masukkan Alamat' className='pl-2 w-full p-2 rounded-md bg-slate-200'value={formData.alamat} onChange={(e)=>setFormData({...formData,alamat:e.target.value})}/>
       <Select
       className='w-full rounded-md bg-slate-200 z-50'

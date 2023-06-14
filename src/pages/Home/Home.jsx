@@ -38,30 +38,41 @@ const Home = ({modal,setModal,partnerModal,setPartnerModal,setSelectedId,selecte
 
   //------ STATE UNTUK DATA DARI BACKEND SELESAI ------
 
+  const [loading, setLoading] = useState(false)
 
   // ------ Mengambil Semua Data ------
   useEffect(()=>{
     if(currentLogin.role === ''){
       navigate('/')
     }
-
+    getData()
+  },[])
+  useEffect(()=>{
+    
+  },[dataCompany])
+  const getData =()=>{
+    setLoading(true)
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: '/read-all',
-      headers: {}
+      url: `/read-all`,
+      headers: {
+        'Authorization': `Bearer ${currentLogin.token}`
+      }
     };
     
     instance.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
       setDataCompany(response.data.user)
+      setLoading(false)
     })
     .catch((error) => {
       console.log(error);
-    });
+      setLoading(false)
 
-  },[])
+    }); 
+  }
     // ------ Mengambil Semua Data End ------
 
  const navigate=useNavigate()
@@ -92,7 +103,7 @@ const Home = ({modal,setModal,partnerModal,setPartnerModal,setSelectedId,selecte
 // ------ INI INGIN KAYA IG TAPI BLM BISA ------
 
      {/* ---------- Detail Tempat END ------*/}
-console.log(currentLogin);
+// console.log(currentLogin);
   return (
     currentLogin.name === null?
     <div className="w-full h-screen  flex relative justify-start items-center">
@@ -111,17 +122,16 @@ console.log(currentLogin);
       {/* {
         showDetail?<DetailTempat setShowDetail={setShowDetail} selectedUsername={selectedUsername} selectedId={selectedId} showDetail={showDetail}/>:null
       } */}
-      <Topbar modal={modal} setModal ={setModal}  partnerModal={partnerModal} setPartnerModal ={setPartnerModal}/>
-      <main className='w-[80%] columns-2 gap-2 mx-auto space-y-2 md:columns-5 md:w-[90%] md:gap-5 md:space-y-5'>
+      <Topbar modal={modal} setModal ={setModal} getData={getData} partnerModal={partnerModal} setPartnerModal ={setPartnerModal} dataCompany={dataCompany} setDataCompany={setDataCompany}/>
+      <main className='w-[80%] columns-2 gap-2 mx-auto space-y-2 md:columns-4 md:w-[90%] md:gap-5 md:space-y-5'>
+        
         {
-          dataCompany.map((item,id)=>{
-            console.log(dataCompany)
-            return (
+          dataCompany.map((item,id)=>(
               <button onClick={()=>navigate(`/${item.username}/company/${item.id}`)}>
                 <Card src={item.images}/>
               </button>
-              )
-            })
+              
+          ))
         }
       </main>
     </div>

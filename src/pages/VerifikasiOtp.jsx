@@ -40,7 +40,7 @@ instance.request(config)
 .then((response) => {
   console.log(JSON.stringify(response.data));
   localStorage.clear()
-  navigate('/auth-login')
+  navigate('/auth/login')
 })
 .catch((error) => {
   console.log(error);
@@ -61,7 +61,7 @@ instance.request(config)
     setOtp('')
   };
 
-  const [countdown, setCountdown] = useState(300); // Waktu hitungan mundur dalam detik (300 detik = 5 menit)
+  const [countdown, setCountdown] = useState(120); // Waktu hitungan mundur dalam detik (120 detik = 2 menit)
   const [canResend, setCanResend] = useState(false); // Status apakah dapat melakukan resend kode
 
   useEffect(() => {
@@ -78,7 +78,7 @@ instance.request(config)
 
   const handleResendCode = () => {
     // Logika untuk mengirim ulang kode
-    setCountdown(300); // Set ulang hitungan mundur menjadi 5 menit
+    setCountdown(120); // Set ulang hitungan mundur menjadi 5 menit
     setCanResend(false); // Nonaktifkan tombol resend kode
     resetResend()
     let config = {

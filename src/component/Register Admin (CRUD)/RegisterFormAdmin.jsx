@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {MdOutlineArrowBackIos} from 'react-icons/md'
 import axios from 'axios'
 import CompanyInfo from './CompanyInfo'
@@ -7,13 +7,22 @@ import {IoIosArrowBack} from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import instance from '../../API/Api'
 import { useStateContext } from '../../Context/StateContext'
+import Swal from 'sweetalert2'
 
 const RegisterFormAdmin = () => {
 const {currentLogin,setCurrentLogin}=useStateContext()
 const navigate=useNavigate()
+
+useEffect(()=>{
+  if(currentLogin.role !== 'Admin'){
+    navigate('/')
+  }
+},[])
+
   const [formData, setFormData] = useState({
     namaCompany :'',
     typeCompany:'',
+    deskripsi:'',
     alamat :'',
     photoCompany:null,
     phone_number:'',
@@ -36,9 +45,9 @@ const navigate=useNavigate()
 
 const handleSubmit =()=>{
   // console.log(formData)
-
   if(isComplete()){
     console.log('sampai sini');
+
     let data = new FormData();
     data.append('CompanyName', formData.namaCompany);
     data.append('CompanyType', formData.typeCompany);
@@ -47,11 +56,11 @@ const handleSubmit =()=>{
     data.append('CompanyRegency', formData.kota);
     data.append('CompanyDistrict', formData.kecamatan);
     data.append('CompanyVillage', formData.desa);
-    data.append('images1', formData.photoCompany);
+    data.append('image', formData.photoCompany);
     data.append('phone_number', formData.phone_number);
     data.append('lat', formData.lat);
     data.append('long', formData.lng);
-    data.append('deskripsi', 'Tempat Makan Enakkk');
+    data.append('deskripsi', formData.deskripsi);
     
     let config = {
       method: 'post',
@@ -66,10 +75,20 @@ const handleSubmit =()=>{
     instance.request(config)
     .then((response) => {
       console.log(JSON.stringify(response.data));
-      alert('bisa gan')
+      
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Data Berhasil Dikirim',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      navigate(`/${currentLogin.username}`)
     })
     .catch((error) => {
       console.log(error)})
+      
+
  }}
  const validatePhoneNumber = (phoneNumber) => {
   // Menghilangkan karakter selain angka
@@ -93,23 +112,34 @@ const handleSubmit =()=>{
  const isComplete = () => {
   if (formData.namaCompany.trim() === "" ) {
     alert('Nama Company tidak valid. Harus terdiri dari minimal 4 karakter alfanumerik')
+  
     return false;
-  } else if  (formData.typeCompany.trim() === ""  ) {
+  } else if  (formData.typeCompany === ""  ) {
     alert('Silahkan Pilih Type Company anda.')
+  
+
     return false;
   } else if  (formData.photoCompany === null  ) {
     alert('Foto Company Wajib Diisi.')
+  
+
     return false;
   }else if  (!validatePhoneNumber(formData.phone_number) ) {
     return false;
   }else if  (formData.alamat.trim() === '') {
     alert('Alamat Harus Diisi')
+  
+
     return false;
   }else if (formData.provinsi.trim() === "" || formData.kota.trim() === "" || formData.kecamatan.trim() === "" || formData.desa.trim() === "") {
     alert('Data Domisili Harus Diisi Semua')
+  
+
     return false;
   }else if  (formData.lat === '') {
     alert('Koordinat Maps Harus Diisi')
+  
+
     return false; 
   }else{
     return true;

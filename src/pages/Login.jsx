@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import bumiAtas from '../assets/login_earth atas.png'
 import bumiBawah from '../assets/login earth bawah.png'
 import bumi from '../assets/ion_earth.svg'
@@ -6,11 +6,18 @@ import {MdOutlineArrowBackIos} from 'react-icons/md'
 import {BiLockOpenAlt} from 'react-icons/bi'
 import gambar from '../assets/RegisterImg/20944201.jpg'
 import google from '../assets/google.png'
+import gambarTravel from '../assets/pngwing.com.png'
+
 
 import { useNavigate } from 'react-router-dom'
 import instance from '../API/Api'
 const Login = () => {
-
+  useEffect(()=>{
+    if(localStorage.getItem('name') !== null ){
+      navigate('/')
+    }
+  },[])
+  const [buttonLogin, setButtonLogin] = useState('Masuk')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const isComplete = () => {
@@ -25,6 +32,7 @@ const Login = () => {
     }
   };
   const handleSubmit = ()=>{
+    setButtonLogin('Tunguu...')
     if(isComplete()){
     let data = new FormData();
 data.append('email', email);
@@ -54,11 +62,13 @@ let config = {
     localStorage.setItem('kecamatan',JSON.stringify(response.data.data.kecamatan))
     localStorage.setItem('desa',JSON.stringify(response.data.data.desa))
     localStorage.setItem('token',JSON.stringify(response.data.access_token))
+    setButtonLogin('Masuk')
     navigate('/')
 
   })
   .catch((error) => {
     console.log(error);
+    setButtonLogin('Masuk')
     alert('gagal')
   });
   }
@@ -67,7 +77,7 @@ let config = {
   
   const navigate = useNavigate()
   return (
-    <div className='from w-full h-screen flex flex-col justify-between items-center md:flex-row md:justify-center md:bg-[url(https://lonelyplanetstatic.imgix.net/marketing/2022/BIT/guidebooks_background_desktop-2022b.jpg?auto=format&fit=clip&w=1920&q=40)] bg-cover'>
+    <div className='from w-full h-screen flex flex-col justify-between items-center md:flex-row md:justify-center md:bg-[url(https://img.freepik.com/free-vector/realistic-travel-background-with-elements_52683-77784.jpg?w=740&t=st=1686709029~exp=1686709629~hmac=0144bdcb8c32086c9fbf4341be0565d89d65c7b056a9077c79f8b9840edb6d5b)]  bg-cover'>
       {/* ------ Navbar ------ */}
         <div className="header w-full  flex flex-col justify-between p-5 md:h-[80%] md:w-[60%]  md:rounded-l-2xl md:bg-white     backdrop-blur-md">
             <span className='text-[#1fa0e2] w-full text-xl h-[5%]'
@@ -75,6 +85,8 @@ let config = {
                 navigate('/')}}
             ><MdOutlineArrowBackIos/></span>
             <div className='md:flex flex-col w-full h-full justify-center items-start pl-10 hidden gap-5'>
+            <img src={gambarTravel} className='w-[200px] ' alt="" />
+
                 <h3 className='text-[2rem] w-[60%] font-bold text-[#1fa0e2]'>Perjalanan Anda dimulai dari sini</h3>
                 <p>Buat akun untuk masuk ke halaman utama</p>
             </div>
@@ -84,7 +96,7 @@ let config = {
             <span className='w-full justify-center flex md:hidden '><img src={gambar} className='w-[70%]' /></span>
       {/* ------ Form Container ------ */}
 
-      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col md:w-[25%] md:h-[80vh] md:rounded-none md:rounded-r-2xl md:bg-[rgba(255,255,255,0.1)] backdrop-blur-md">
+      <div className="form-container w-full h-[70vh] rounded-t-3xl  flex justify-between gap-5 items-start p-5 flex-col md:w-[25%] md:h-[80vh] md:rounded-none md:rounded-r-2xl  md:bg-[rgba(0,0,0,0.12)] backdrop-blur-md ">
         <div className="top w-full flex flex-col gap-5 ">
             <h1 className='text-2xl font-semibold md:text-3xl md:text-white'>Login</h1>
 </div>
@@ -104,7 +116,7 @@ let config = {
             <button 
             onClick={()=>{
               handleSubmit()}}
-            className='bg-[#1fa0e2] text-white  w-full p-3 rounded-lg'>Masuk</button>
+            className='bg-[#1fa0e2] text-white  w-full p-3 rounded-lg'>{buttonLogin}</button>
             <span className='flex w-full items-center text-white gap-5'>
               <hr className='h-[2px] w-[100vw] '/>
               <p>Atau</p>

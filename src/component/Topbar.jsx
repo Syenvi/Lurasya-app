@@ -5,13 +5,11 @@ import Hamburger from '../assets/Hamburger.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import SearchBar from './SearchBar'
 import { useStateContext } from '../Context/StateContext'
-const Topbar = ({setModal,setPartnerModal}) => {
-  const [hasilKategori,setHasilKategori]=useState('Pilih Kategori')
+const Topbar = ({setModal,setPartnerModal,dataCompany,setDataCompany,getData}) => {
   const {currentLogin,setCurrentLogin} =useStateContext()
   const navigate = useNavigate()
   const [showKategori, setShowKategori] = useState(false)
   const [navbar,setNavbar]=useState(false)
-  const pilihKategori = ()=>(showKategori?'':'hidden')
   const changeNavbar = ()=>{
     if(window.scrollY >= 100){
       setNavbar(true)
@@ -25,12 +23,12 @@ const Topbar = ({setModal,setPartnerModal}) => {
   
   return (
     <>
-    <div className={navbar?'w-full   bg-white sticky shadow-lg top-0 transition-all duration-300 ease-in-out flex  p-5 gap-2 justify-center  md:flex-col md:p-0 md:h-[15vh]':'w-full h-[20vh]  bg-[url(https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/discovery-desktop/hero-banner/2022/07/18/897ebe40-0e9b-40b1-8a39-7ef03ca3444d-1658117837173-81a0774262fc44bfde4ebb9345a51997.png?w=1024)] bg-cover  flex flex-col justify-center gap-2 items-center  transition-all duration-300 ease-in-out md:h-[50vh] md:justify-between'}>
+    <div className={navbar?'w-full   bg-white sticky shadow-lg top-0 transition-all duration-300 ease-in-out flex  p-5 gap-2 justify-center  md:flex-col md:p-0 md:h-[15vh]':'w-full h-[20vh]  bg-[url(https://images8.alphacoders.com/125/1252336.jpg)] bg-cover  flex flex-col justify-center gap-2 items-center  transition-all duration-300 ease-in-out md:h-[50vh] md:justify-between'}>
       {/* ------ Topbar Desktop ------*/}
       <div className="hidden topbar w-full md:flex justify-between  pl-10 pr-10 pb-0 h-[50%] items-center ">
         <h1 className={navbar?'text-[#1fa0e2] text-[2rem] font-semibold ':'text-white text-[2rem] font-semibold'}>Lurasya</h1>
         <div className={navbar? `flex w-[50%]  justify-center` : ` hidden`}> 
-          <SearchBar navbar={navbar} pilihKategori={pilihKategori} setHasilKategori={setHasilKategori} hasilKategori={hasilKategori}/>
+          <SearchBar navbar={navbar} dataCompany={dataCompany} setDataCompany={setDataCompany} getData={getData}/>
         </div>
         <div className="PenggantiHamburger flex items-center gap-5">
          <button className={navbar?'text-black font-semibold text-sm':'text-white font-semibold text-sm'}>Download Aplikasi</button>
@@ -47,7 +45,9 @@ const Topbar = ({setModal,setPartnerModal}) => {
           
             <ul className='bg-white w-32 absolute right-0  flex-col h-20 z-30 shadow-lg justify-evenly top-14 rounded-lg hidden group-focus:flex'>
               <li onClick={()=>navigate(`/${currentLogin.username}`)} className='w-full hover:bg-slate-300 pl-3 h-[50%] text-sm flex items-center '>Lihat Profil</li>
-              <li onClick={()=>localStorage.clear()} className='w-full hover:bg-slate-300 pl-3 h-[50%] flex items-center text-sm'>Logout</li>
+              <li onClick={()=>{
+                localStorage.clear() 
+                location.reload()}} className='w-full hover:bg-slate-300 pl-3 h-[50%] flex items-center text-sm'>Logout</li>
             </ul>
           </button>
         </div>
@@ -66,11 +66,11 @@ const Topbar = ({setModal,setPartnerModal}) => {
 
 
         {/* ------ Greeting ------ */}
-        <h1 className={navbar?'hidden':' text-white md:text-2xl '}>Hi Kamu,<span className='font-bold'>Mau kemana?</span></h1>
+        <h1 className={navbar?'hidden':' text-white md:text-2xl '}>Hi {currentLogin.name}!,<span className='font-bold'>Mau kemana?</span></h1>
         {/* ------ Greeting ------ */}
         {/* ------ SearchBar ------ */}
         <div className={navbar? `md:hidden flex w-[90%]  ` : ` flex w-[70%] md:w-[60%] justify-center`}> 
-          <SearchBar navbar={navbar} pilihKategori={pilihKategori} setHasilKategori={setHasilKategori} hasilKategori={hasilKategori}/>
+          <SearchBar navbar={navbar}  dataCompany={dataCompany} setDataCompany={setDataCompany} getData={getData}/>
         </div>
         {/* ------ SearchBar ------ */}
         </div>
